@@ -1,9 +1,5 @@
 # If you want to replicate my configuraiton, I have to mention that not all settings are mine some of them are default, I didn't mess with them mostly bc I don't knwo what they do.
 
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-
-
 # TERM=xterm-kitty
 export EDITOR='nvim'
 # export VISUAL='subl' # crontab doesn't work with ST for what fucking reason.
@@ -14,9 +10,7 @@ case $- in # If not running interactively, don't do anything. Don't know what th
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
 HISTCONTROL=ignoreboth
-
 # append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -91,15 +85,6 @@ fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -185,6 +170,11 @@ open_with_fzf() {
 }
 
 
+export CurrentWindowWidth=$(xrandr | grep primary | awk '{print $4}' | cut -d x -f 1)
+export CurrentWindowHight=$(xrandr | grep primary | awk '{print $4}' | cut -d x -f 2 | cut -d '+' -f 1)
+export CurrentWindowWidthM20=$(($CurrentWindowWidth - 20 ))
+export CurrentWindowHightM20=$(($CurrentWindowHight - 20 ))
+
 # Built in screen size 1920x1024, external 1600x900
 alias scast="ffmpeg -v error -f alsa -ac 1 -i default -f x11grab -r 30 -s 1600x900 -i :0.0 -acodec pcm_s16le -vcodec libx264 -preset ultrafast -crf 0 "
 # alias screencastPluse="ffmpeg -f pulse -i 3 -ac 2 -f x11grab -r 30 -s 1600x900 -i :0.0 -acodec pcm_s16le -vcodec libx264 -preset ultrafast -crf 0 -y screencast.mkv"
@@ -252,3 +242,66 @@ SubToText() {
 
 # sudo mount /dev/nvme0n1p7 /media/moises/F/
 # exec fish
+
+
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# some more ls aliases
+
+### Abbreviations  ======================================================
+alias v='nvim'
+alias vim='nvim'
+alias diff="kitty +kitten diff "
+alias sai="sudo apt install"
+alias sainir="sudo apt install --no-install-recommends"
+alias df='df -h'
+alias free='free -g'
+alias reboot='sudo reboot'
+alias virtnetwork='sudo virsh net-start default'
+alias p='ping -aAc 4 192.168.1.1 && ping -aAc 4 google.com '
+alias h='cd ~/'
+alias n='cd ~/Documents/Notes'
+alias m='cd ~/Music/Music'
+alias w='cd ~/Pictures/Walls'
+alias c='clear'
+alias r='ranger .'
+alias rm='rm -rf'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ld='fd -t d -d 1'
+alias lf='fd -t f -d 1'
+alias l='exa --icons --group-directories-first'
+alias ll='exa --icons --group-directories-first -l'
+alias la='exa --icons --group-directories-first -a'
+alias lh="ls -ld .*" # "ls -A | egrep '^\.'" This works but not as an alias
+alias lhf="ls -ld .* | grep -v ^d" # https://linuxhandbook.com/display-only-hidden-files/
+alias lhf="ls -ld .* | grep -v ^d"
+alias merge='xrdb -merge ~/.Xresources'
+alias q='exit'
+alias d='cd ~/Downloads'
+alias doc='cd ~/Documents'
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias .s='cd ~/.scripts'
+alias pk='sudo pkill'
+# alias pk='ps -ef | fzf  | awk '{print $2}' | xargs kill -9'
+alias search='w3m google.com'
+alias what='dictl -d fd-eng-ara (cat /usr/share/dict/words | fzf --reverse) | tail -n 2'
+alias def='dictl  (cat /usr/share/dict/words | fzf --reverse)'
+alias pallet='pastel random | pastel mix $(pastel random -n 1) | pastel lighten 0.2 | pastel format | pastel format'
+alias printPallet='pastel color $(cat pallet.txt | tr "#" " " ) | pastel format'
+alias arec='arecord -r 44100 -f S16_LE '
+alias fmrec='ffmpeg -v error -f alsa -i hw:0 '
+alias ssc="ffmpeg -f x11grab -video_size 1920x1080 -framerate 30  -i :0.0+0,0 -strict experimental  -v error"
+alias fplay='ffplay -v error -x $CurrentWindowWidthM20 -y $CurrentWindowHightM20 -noborder'
+alias nplay='ffplay -vf negate -v error -x $CurrentWindowWidthM20 -y $CurrentWindowHightM20 -noborder'
+alias oplay='ffplay -v error -nodisp'
+alias yto='yt-dlp -f 251 '
